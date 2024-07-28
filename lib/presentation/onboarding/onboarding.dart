@@ -38,7 +38,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         });
   }
 
-  Widget _getContentWidget(SliderViewObject sliderViewObject) {
+  Widget _getContentWidget(SliderViewObject? sliderViewObject) {
     if (sliderViewObject == null) {
       return Container();
     } else {
@@ -94,7 +94,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               child: SizedBox(height: AppSize.s20, width: AppSize.s20, child: SvgPicture.asset(ImageAssets.leftArrowIc)),
               onTap: () {
                 _pageController.animateToPage(
-                  _viewModel.s(),
+                  _viewModel.goNext(),
                   duration: const Duration(milliseconds: DurationConstant.d300),
                   curve: Curves.bounceInOut,
                 );
@@ -103,10 +103,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
           ),
           Row(
             children: [
-              for (int i = 0; i < _list.length; i++)
+              for (int i = 0; i < sliderViewObject!.numOfSlides; i++)
                 Padding(
                   padding: const EdgeInsets.all(AppPadding.p8),
-                  child: _getProperCircle(i),
+                  child: _getProperCircle(i,sliderViewObject!.currentIndex),
                 )
             ],
           ),
@@ -116,7 +116,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               child: SizedBox(height: AppSize.s20, width: AppSize.s20, child: SvgPicture.asset(ImageAssets.rightArrowIc)),
               onTap: () {
                 _pageController.animateToPage(
-                  _getNextIndex(),
+                  _viewModel.goPrevious(),
                   duration: const Duration(milliseconds: DurationConstant.d300),
                   curve: Curves.bounceInOut,
                 );
@@ -128,8 +128,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     );
   }
 
-  Widget _getProperCircle(int index) {
-    if (index == _currentIndex) {
+  Widget _getProperCircle(int index, int currentIndex) {
+    if (index == currentIndex) {
       return SvgPicture.asset(ImageAssets.hollowCirlceIc);
     } else {
       return SvgPicture.asset(ImageAssets.solidCircleIc);

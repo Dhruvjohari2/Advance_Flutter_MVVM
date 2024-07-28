@@ -30,21 +30,21 @@ class OnBoardingViewModel extends BaseViewModel with OnBoardingViewModelInputs, 
   }
 
   @override
-  void goNext() {
+  int goNext() {
     int nextIndex = _currentIndex++;
     if (nextIndex >= _list.length) {
       _currentIndex = 0;
     }
-    _postDataToView();
+    return _currentIndex;
   }
 
   @override
-  void goPrevious() {
+  int goPrevious() {
     int previousIndex = _currentIndex--;
     if (previousIndex == -1) {
       _currentIndex = _list.length - 1;
     }
-    _postDataToView();
+    return _currentIndex;
   }
 
   @override
@@ -58,8 +58,7 @@ class OnBoardingViewModel extends BaseViewModel with OnBoardingViewModelInputs, 
   Sink get inputSliderViewObject => _streamController.sink;
 
   @override
-  Stream<SliderViewObject> get outputSliderViewObject =>
-      _streamController.stream.map((slideViewObject) => slideViewObject);
+  Stream<SliderViewObject> get outputSliderViewObject => _streamController.stream.map((slideViewObject) => slideViewObject);
 
   _postDataToView() {
     inputSliderViewObject.add(SliderViewObject(_list[_currentIndex], _currentIndex, _list.length));
