@@ -23,8 +23,8 @@ class Contact{
 }
 
 class Authentication{
-  Customer customer;
-  Contact contact;
+  Customer? customer;
+  Contact? contact;
 
   Authentication(this.customer,this.contact);
 }
