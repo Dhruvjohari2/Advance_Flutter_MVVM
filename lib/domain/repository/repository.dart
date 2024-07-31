@@ -1,6 +1,6 @@
 import 'package:advance_mvvm/data/network/failure.dart';
 import 'package:advance_mvvm/data/request/request.dart';
-import 'package:advance_mvvm/domain/model.dart';
+import 'package:advance_mvvm/domain/model/model.dart';
 import 'package:dartz/dartz.dart';
 
 abstract  class Repository{
