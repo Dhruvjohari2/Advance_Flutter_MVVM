@@ -2,6 +2,7 @@ import 'package:advance_mvvm/domain/model/model.dart';
 import 'package:advance_mvvm/presentation/onboarding/onboarding_viewmodel.dart';
 import 'package:advance_mvvm/presentation/resources/assets_manager.dart';
 import 'package:advance_mvvm/presentation/resources/color_manager.dart';
+import 'package:advance_mvvm/presentation/resources/routes_manager.dart';
 import 'package:advance_mvvm/presentation/resources/strings_manager.dart';
 import 'package:advance_mvvm/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class OnBoardingView extends StatefulWidget {
 }
 
 class _OnBoardingViewState extends State<OnBoardingView> {
-  OnBoardingViewModel _viewModel = OnBoardingViewModel();
+  final OnBoardingViewModel _viewModel = OnBoardingViewModel();
   final PageController _pageController = PageController(initialPage: 0);
 
   _bind() {
@@ -70,7 +71,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                  },
                   child: const Text(AppStrings.skip),
                 ),
               ),
@@ -106,7 +109,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               for (int i = 0; i < sliderViewObject!.numOfSlides; i++)
                 Padding(
                   padding: const EdgeInsets.all(AppPadding.p8),
-                  child: _getProperCircle(i,sliderViewObject!.currentIndex),
+                  child: _getProperCircle(i, sliderViewObject.currentIndex),
                 )
             ],
           ),
