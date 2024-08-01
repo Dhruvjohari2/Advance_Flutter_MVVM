@@ -5,6 +5,8 @@ abstract class NetworkInfo {
 }
 
 class NetworkInfoImpl implements NetworkInfo {
+
+  //data connection checker is not dart 3 computable
   InternetConnectionChecker _internetConnectionChecker;
 
   NetworkInfoImpl(this._internetConnectionChecker);

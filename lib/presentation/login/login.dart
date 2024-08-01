@@ -1,3 +1,4 @@
+import 'package:advance_mvvm/app/di.dart';
 import 'package:advance_mvvm/presentation/login/login_viewmodel.dart';
 import 'package:advance_mvvm/presentation/resources/assets_manager.dart';
 import 'package:advance_mvvm/presentation/resources/color_manager.dart';
@@ -5,7 +6,6 @@ import 'package:advance_mvvm/presentation/resources/routes_manager.dart';
 import 'package:advance_mvvm/presentation/resources/strings_manager.dart';
 import 'package:advance_mvvm/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -15,7 +15,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final LoginViewModel _viewModel = LoginViewModel(null);
+  final LoginViewModel _viewModel = instance<LoginViewModel>();
 
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -43,7 +43,7 @@ class _LoginViewState extends State<LoginView> {
             key: _formKey,
             child: Column(
               children: [
-                Image(image: AssetImage(ImageAssets.splashLogo)),
+                const Image(image: AssetImage(ImageAssets.splashLogo)),
                 const SizedBox(height: AppSize.s2),
                 Padding(
                   padding: const EdgeInsets.only(left: AppPadding.p28, right: AppPadding.p28),
@@ -101,7 +101,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: AppPadding.p8,
                     left: AppPadding.p28,
                     right: AppPadding.p28,
@@ -113,7 +113,7 @@ class _LoginViewState extends State<LoginView> {
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, Routes.forgetPasswordRoute);
                         },
-                        child: Text(
+                        child: const Text(
                           AppStrings.forgetPassword,
                           // style: Theme.of(context).textTheme.headlineSmall,
                         ),
@@ -122,7 +122,7 @@ class _LoginViewState extends State<LoginView> {
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, Routes.registerRoute);
                         },
-                        child: Text(
+                        child: const Text(
                           AppStrings.registerText,
                           // style: Theme.of(context).textTheme.headlineSmall,
                         ),

@@ -11,7 +11,7 @@ class LoginViewModel extends BaseViewModel implements LoginViewModelInputs, Logi
 
   var loginObject = LoginObject("", "");
 
-  final LoginUseCase? _loginUseCase;
+  final LoginUseCase _loginUseCase;
   LoginViewModel(this._loginUseCase);
 
   @override
@@ -74,10 +74,10 @@ class LoginViewModel extends BaseViewModel implements LoginViewModelInputs, Logi
 
   @override
   login() async {
-    // (await _loginUseCase?.execute(LoginUseCaseInput(loginObject.userName, loginObject.password)))?.fold(
-    //   (failure) => {print(failure.message)},
-    //   (data) => {print(data.customer?.name)},
-    // );
+    (await _loginUseCase?.execute(LoginUseCaseInput(loginObject.userName, loginObject.password)))?.fold(
+      (failure) => {print(failure.message)},
+      (data) => {print(data.customer?.name)},
+    );
   }
 }
 

@@ -12,7 +12,10 @@ const String DEFAULT_LANGUAGE = "language";
 
 class Diofactory {
   AppPreferences _appPreferences;
+
   Diofactory(this._appPreferences);
+
+
   Future<Dio> getDio() async {
     Dio dio = Dio();
     int _timeOut = 60 * 1000;
