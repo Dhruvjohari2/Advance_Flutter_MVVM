@@ -11,7 +11,7 @@ class LoginViewModel extends BaseViewModel implements LoginViewModelInputs, Logi
 
   var loginObject = LoginObject("", "");
 
-  final LoginUseCase _loginUseCase;
+  LoginUseCase? _loginUseCase;
   LoginViewModel(this._loginUseCase);
 
   @override
