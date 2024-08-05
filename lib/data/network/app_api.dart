@@ -12,7 +12,7 @@ abstract class AppServiceClient {
   Future<AuthenticationResponse> login(
     @Field("email") String email,
     @Field("password") String password,
-    @Field("iemi") String iemi,
-    @Field("deviceType") String deviceType,
+    @Field("lemi") String lemi,
+    @Field("device-type") String deviceType,
   );
 }

@@ -1,4 +1,5 @@
 import 'package:advance_mvvm/app/di.dart';
+import 'package:advance_mvvm/domain/usecase/login_usecase.dart';
 import 'package:advance_mvvm/presentation/common/state_renderer/state_render_impl.dart';
 import 'package:advance_mvvm/presentation/login/login_viewmodel.dart';
 import 'package:advance_mvvm/presentation/resources/assets_manager.dart';
@@ -16,7 +17,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  LoginViewModel _viewModel = LoginViewModel(null);
+  LoginViewModel _viewModel = instance<LoginViewModel>();
 
   TextEditingController _userNameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();

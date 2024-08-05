@@ -13,7 +13,7 @@ class _AppServiceClient implements AppServiceClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://dhruvjohari.wiremockapi.cloud/';
+    baseUrl ??= 'https://dhruvjohari2.wiremockapi.cloud/';
   }
 
   final Dio _dio;
@@ -24,7 +24,7 @@ class _AppServiceClient implements AppServiceClient {
   Future<AuthenticationResponse> login(
     String email,
     String password,
-    String iemi,
+    String lemi,
     String deviceType,
   ) async {
     final _extra = <String, dynamic>{};
@@ -33,8 +33,8 @@ class _AppServiceClient implements AppServiceClient {
     final _data = {
       'email': email,
       'password': password,
-      'iemi': iemi,
-      'deviceType': deviceType,
+      'lemi': lemi,
+      'device-type': deviceType,
     };
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AuthenticationResponse>(Options(

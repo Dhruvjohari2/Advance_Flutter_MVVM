@@ -8,7 +8,9 @@ const ZERO = 0;
 extension CustomerResponseMapper on CustomerResponse? {
   //toDomain means converting data layer to  Domain(model)
   Customer toDomain() {
-    return Customer(this?.id.orEmpty() ?? EMPTY, this?.name?.orEmpty() ?? EMPTY, this?.numOfNotifications?.orZero() ?? ZERO);
+    return Customer(this?.id.orEmpty() ?? EMPTY,
+        this?.name?.orEmpty() ?? EMPTY,
+        this?.numOfNotifications?.orZero() ?? ZERO);
   }
 }
 
@@ -22,6 +24,6 @@ extension ContactsResponseMapper on ContactResponse? {
 extension AuthenticationResponseMapper on AuthenticationResponse? {
   //toDomain means converting data layer to  Domain(model)
   Authentication toDomain() {
-    return Authentication(this?.customer?.toDomain(), this?.contact?.toDomain());
+    return Authentication(this?.customer?.toDomain(), this?.contacts?.toDomain());
   }
 }

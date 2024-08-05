@@ -23,7 +23,8 @@ class CustomerResponse {
 
   CustomerResponse(this.name, this.id, this.numOfNotifications);
 
-  factory CustomerResponse.fromJson(Map<String, dynamic> json) => _$CustomerResponseFromJson(json);
+  factory CustomerResponse.fromJson(Map<String, dynamic> json) =>
+      _$CustomerResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$CustomerResponseToJson(this);
 }
@@ -39,7 +40,8 @@ class ContactResponse {
 
   ContactResponse(this.email, this.link, this.phone);
 
-  factory ContactResponse.fromJson(Map<String, dynamic> json) => _$ContactResponseFromJson(json);
+  factory ContactResponse.fromJson(Map<String, dynamic> json) =>
+      _$ContactResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ContactResponseToJson(this);
 }
@@ -48,10 +50,10 @@ class ContactResponse {
 class AuthenticationResponse extends BaseResponse {
   @JsonKey(name: "customer")
   CustomerResponse? customer;
-  @JsonKey(name: "contact")
-  ContactResponse? contact;
+  @JsonKey(name: "contacts")
+  ContactResponse? contacts;
 
-  AuthenticationResponse(this.contact, this.customer);
+  AuthenticationResponse(this.contacts, this.customer);
 
   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) => _$AuthenticationResponseFromJson(json);
 

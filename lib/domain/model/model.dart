@@ -24,9 +24,9 @@ class Contact {
 
 class Authentication {
   Customer? customer;
-  Contact? contact;
+  Contact? contacts;
 
-  Authentication(this.customer, this.contact);
+  Authentication(this.customer, this.contacts);
 }
 
 class DeviceInfo {
