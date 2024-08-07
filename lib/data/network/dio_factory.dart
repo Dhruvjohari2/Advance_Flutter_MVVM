@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:advance_mvvm/app/app_prefs.dart';
 import 'package:advance_mvvm/app/constant.dart';
 import 'package:dio/dio.dart';
@@ -20,7 +22,7 @@ class Diofactory {
     Dio dio = Dio();
     int _timeOut = 60 * 1000;
     String language = await _appPreferences.getAppLanguage();
-    Map<String, String> headers = {
+    Map<String, dynamic> headers = {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
       AUTHORIZATION: Constant.token,
@@ -32,10 +34,34 @@ class Diofactory {
       receiveTimeout: Duration(minutes: _timeOut),
       headers: headers,
     );
+    print("dio : $dio");
     if (kReleaseMode) {
       print("release mode no logs");
     } else {
-      dio.interceptors.add(PrettyDioLogger(requestHeader: true, requestBody: true, responseHeader: true));
+      dio.interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (RequestOptions options,RequestInterceptorHandler handler) {
+            return handler.next(options);
+          },
+          onResponse: (Response response, ResponseInterceptorHandler handler){
+            if(response.data is String ){
+              try {
+                final jsonData = jsonDecode(response.data);
+                response.data = jsonData;
+              } on FormatException catch (e) {
+                print("Error prasing JSON: $e");
+              }
+            }
+            else {
+              print('REspinse data is likely  JSON');
+            }
+            return handler.next(response);
+          },
+          onError: (DioException error, ErrorInterceptorHandler handler){
+            return handler.next(error);
+      }
+        )
+      );
     }
     return dio;
   }
