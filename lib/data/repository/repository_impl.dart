@@ -54,4 +54,10 @@ class RepositoryImpl extends Repository {
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, String>> register(RegisterRequest registerRequest) {
+    // TODO: implement register
+    throw UnimplementedError();
+  }
 }

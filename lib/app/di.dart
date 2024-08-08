@@ -5,7 +5,9 @@ import 'package:advance_mvvm/data/network/dio_factory.dart';
 import 'package:advance_mvvm/data/network/network_info.dart';
 import 'package:advance_mvvm/data/repository/repository_impl.dart';
 import 'package:advance_mvvm/domain/repository/repository.dart';
+import 'package:advance_mvvm/domain/usecase/forget_password_usecase.dart';
 import 'package:advance_mvvm/domain/usecase/login_usecase.dart';
+import 'package:advance_mvvm/presentation/forget_password/forget_password_viewmodel.dart';
 import 'package:advance_mvvm/presentation/login/login_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -38,3 +40,12 @@ initLoginModule() {
     instance.registerFactory<LoginViewModel>(() => LoginViewModel(instance()));
   }
 }
+
+initForgetPasswordModule() {
+  if (!GetIt.I.isRegistered<ForgetPasswordUseCase>()) {
+    instance.registerFactory<ForgetPasswordUseCase>(() => ForgetPasswordUseCase(instance()));
+    instance.registerFactory<ForgetPasswordViewModel>(() => ForgetPasswordViewModel(instance()));
+  }
+}
+
+
