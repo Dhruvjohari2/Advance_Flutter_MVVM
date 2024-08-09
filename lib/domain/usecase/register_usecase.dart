@@ -23,10 +23,11 @@ class RegisterUseCase implements BaseUseCase<RegisterUseCaseInput, Authenticatio
 
 class RegisterUseCaseInput {
   String countryMobileCode;
+  String mobileNumber;
   String userName;
   String email;
   String password;
   String profilePicture;
 
-  RegisterUseCaseInput(this.countryMobileCode, this.userName, this.email, this.profilePicture, this.password);
+  RegisterUseCaseInput(this.mobileNumber,this.countryMobileCode, this.userName, this.email, this.profilePicture, this.password);
 }
