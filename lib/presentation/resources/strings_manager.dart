@@ -12,6 +12,10 @@ class AppStrings {
   static const String skip = 'Skip';
   static const String username = 'Username';
   static const String usernameError = 'Username is wrong';
+  static const String mobileNumber = 'MobileNumber';
+  static const String mobileNumberError = 'MobileNumber is Wrong';
+  static const String email = 'Email';
+  static const String emailError = 'Email is wrong ';
   static const String password = 'Password';
   static const String passwordError = 'Password is wrong';
   static const String login = 'Login';

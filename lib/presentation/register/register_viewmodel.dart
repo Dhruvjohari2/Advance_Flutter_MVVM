@@ -18,21 +18,25 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
   RegisterUseCase _registerUseCase;
   var registerViewObject = RegisterObject("", "", "", "", "", "");
   RegisterViewModel(this._registerUseCase);
+
   @override
   void start() {
-    // TODO: implement start
+    inputState.add(ContentState());
     super.start();
   }
 
   @override
   register() async {
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
-    (await _registerUseCase.execute(RegisterUseCaseInput(registerViewObject.userName, registerViewObject.password,registerViewObject.countryMobileCode,
-        registerViewObject.mobileNumber,registerViewObject.profilePicture,registerViewObject.email))).fold(
-    (failure) => {inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message)), print("failure")},
-    (data) => {inputState.add(ContentState()),
-    // isUserLoggedInSuccessfullyStreamController.add(true),
-    print("data ${data.customer?.name}")},
+    (await _registerUseCase.execute(RegisterUseCaseInput(registerViewObject.userName, registerViewObject.password,
+            registerViewObject.countryMobileCode, registerViewObject.mobileNumber, registerViewObject.profilePicture, registerViewObject.email)))
+        .fold(
+      (failure) => {inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message)), print("failure")},
+      (data) => {
+        inputState.add(ContentState()),
+        // isUserLoggedInSuccessfullyStreamController.add(true),
+        print("data ${data.customer?.name}")
+      },
     );
     // TODO: implement register
     throw UnimplementedError();
