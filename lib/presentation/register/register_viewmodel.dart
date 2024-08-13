@@ -55,6 +55,7 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
 
   @override
   setUserName(String userName) {
+    inputUserName.add(userName);
     if (_isUseNameValid(userName)) {
       registerViewObject = registerViewObject.copyWith(userName: userName);
     } else {
@@ -65,6 +66,7 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
 
   @override
   setEmail(String email) {
+    inputEmail.add(email);
     if (_isEmailValid(email)) {
       registerViewObject = registerViewObject.copyWith(email: email);
     } else {
@@ -75,6 +77,7 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
 
   @override
   setMobileNumber(String mobileNumber) {
+    inputMobileNumber.add(mobileNumber);
     if (_isMobileNumberValid(mobileNumber)) {
       registerViewObject = registerViewObject.copyWith(mobileNumber: mobileNumber);
     } else {
@@ -85,6 +88,7 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
 
   @override
   setPassword(String password) {
+    inputPassword.add(password);
     if (_isPasswordValid(password)) {
       registerViewObject = registerViewObject.copyWith(password: password);
     } else {
@@ -95,6 +99,7 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
 
   @override
   setProfilePicture(File file) {
+    inputProfilePicture.add(file);
     if (file.path.isNotEmpty) {
       registerViewObject = registerViewObject.copyWith(profilePicture: file.path);
     } else {
@@ -137,7 +142,7 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
   Stream<bool> get outputIsMobileNumberValid => _mobileNumberStreamController.stream.map((mobileNumber) => _isMobileNumberValid(mobileNumber));
 
   @override
-  Stream<String> get outputErrorMobileNumber => outputIsMobileNumberValid.map((isMobileNumberValid) => isMobileNumberValid ? "" : "Invalid email");
+  Stream<String> get outputErrorMobileNumber => outputIsMobileNumberValid.map((isMobileNumberValid) => isMobileNumberValid ? "" : "Invalid Mobile Number");
 
   @override
   Stream<bool> get outputIsPasswordValid => _passwordStreamController.stream.map((password) => _isPasswordValid(password));
@@ -146,13 +151,13 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
   Stream<String> get outputErrorPassword => outputIsPasswordValid.map((isPasswordValid) => isPasswordValid ? "" : "Invalid Password");
 
   @override
-  Stream<File> get outputIsProfilePictureValid => _profileStreamController.stream.map((file) => file);
+  Stream<File> get outputProfilePicture => _profileStreamController.stream.map((file) => file);
 
   @override
   Stream<bool> get outputIsAllInputsValid => _isAllInputValidStreamController.stream.map((_) => _validateAllInputs());
 
   _isUseNameValid(String userName) {
-    return userName.length >= 8;
+    return userName.length >= 5;
   }
 
   _isPasswordValid(String password) {
@@ -171,7 +176,6 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
     return registerViewObject.profilePicture.isNotEmpty &&
         registerViewObject.email.isNotEmpty &&
         registerViewObject.password.isNotEmpty &&
-        registerViewObject.mobileNumber.isNotEmpty &&
         registerViewObject.mobileNumber.isNotEmpty &&
         registerViewObject.userName.isNotEmpty &&
         registerViewObject.countryMobileCode.isNotEmpty;
@@ -210,6 +214,6 @@ abstract class RegisterViewModeOutput {
   Stream<bool> get outputIsPasswordValid;
   Stream<String> get outputErrorPassword;
 
-  Stream<File> get outputIsProfilePictureValid;
+  Stream<File> get outputProfilePicture;
   Stream<bool> get outputIsAllInputsValid;
 }

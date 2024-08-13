@@ -25,4 +25,9 @@ class AppStrings {
   static const String retryAgain = 'Retry Again';
   static const String ok = 'Ok';
   static const String success = 'Success';
+  static const String profilePicture = 'Profile picture';
+  static const String photoGallery = 'Photo from Gallery';
+  static const String photoCamera = 'Photo from Camera';
+  static const String register = 'Register';
+  static const String haveAccount = 'Already have an account? Login';
 }
