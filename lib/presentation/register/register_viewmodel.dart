@@ -14,8 +14,9 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
   final StreamController _passwordStreamController = StreamController<String>.broadcast();
   final StreamController _profileStreamController = StreamController<File>.broadcast();
   final StreamController _isAllInputValidStreamController = StreamController<void>.broadcast();
+  final StreamController isUserLoggedInSuccessfullyStreamController = StreamController<bool>();
 
-  RegisterUseCase _registerUseCase;
+  final RegisterUseCase _registerUseCase;
   var registerViewObject = RegisterObject("", "", "", "", "", "");
   RegisterViewModel(this._registerUseCase);
 
@@ -31,15 +32,16 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
     (await _registerUseCase.execute(RegisterUseCaseInput(registerViewObject.userName, registerViewObject.password,
             registerViewObject.countryMobileCode, registerViewObject.mobileNumber, registerViewObject.profilePicture, registerViewObject.email)))
         .fold(
-      (failure) => {inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message)), print("failure")},
+      (failure) => {inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message)), print("failure"),
+        isUserLoggedInSuccessfullyStreamController.add(true),
+      },
       (data) => {
         inputState.add(ContentState()),
-        // isUserLoggedInSuccessfullyStreamController.add(true),
+        _isAllInputValidStreamController.add(true),
+        isUserLoggedInSuccessfullyStreamController.add(true),
         print("data ${data.customer?.name}")
       },
     );
-    // TODO: implement register
-    throw UnimplementedError();
   }
 
   @override
@@ -50,6 +52,7 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
     _passwordStreamController.close();
     _profileStreamController.close();
     _isAllInputValidStreamController.close();
+    isUserLoggedInSuccessfullyStreamController.close();
     super.dispose();
   }
 
@@ -109,6 +112,16 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
   }
 
   @override
+  setMobileCode(String mobileCode) {
+    if (mobileCode.isNotEmpty) {
+      registerViewObject = registerViewObject.copyWith(countryMobileCode: mobileCode);
+    } else {
+      registerViewObject = registerViewObject.copyWith(countryMobileCode: "");
+    }
+    _validate();
+  }
+
+  @override
   Sink get inputEmail => _emailStreamController.sink;
 
   @override
@@ -142,7 +155,8 @@ class RegisterViewModel extends BaseViewModel implements RegisterViewModelInput,
   Stream<bool> get outputIsMobileNumberValid => _mobileNumberStreamController.stream.map((mobileNumber) => _isMobileNumberValid(mobileNumber));
 
   @override
-  Stream<String> get outputErrorMobileNumber => outputIsMobileNumberValid.map((isMobileNumberValid) => isMobileNumberValid ? "" : "Invalid Mobile Number");
+  Stream<String> get outputErrorMobileNumber =>
+      outputIsMobileNumberValid.map((isMobileNumberValid) => isMobileNumberValid ? "" : "Invalid Mobile Number");
 
   @override
   Stream<bool> get outputIsPasswordValid => _passwordStreamController.stream.map((password) => _isPasswordValid(password));
@@ -193,6 +207,7 @@ abstract class RegisterViewModelInput {
   setMobileNumber(String mobileNumber);
   setPassword(String password);
   setProfilePicture(File file);
+  setMobileCode(String countryCode);
   Sink get inputUserName;
   Sink get inputMobileNumber;
   Sink get inputEmail;

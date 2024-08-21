@@ -21,12 +21,12 @@ class Diofactory {
   Future<Dio> getDio() async {
     Dio dio = Dio();
     int _timeOut = 60 * 1000;
-    String language = await _appPreferences.getAppLanguage();
+    // String language = await _appPreferences.getAppLanguage();
     Map<String, dynamic> headers = {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
       AUTHORIZATION: Constant.token,
-      DEFAULT_LANGUAGE: language,
+      // DEFAULT_LANGUAGE: language,
     };
     dio.options = BaseOptions(
       baseUrl: Constant.baseUrl,
@@ -38,6 +38,7 @@ class Diofactory {
     if (kReleaseMode) {
       print("release mode no logs");
     } else {
+      print("Errror1 ${Response}");
       dio.interceptors.add(
         InterceptorsWrapper(
           onRequest: (RequestOptions options,RequestInterceptorHandler handler) {
@@ -53,11 +54,13 @@ class Diofactory {
               }
             }
             else {
+      print("Errror3");
               print('REspinse data is likely  JSON');
             }
             return handler.next(response);
           },
           onError: (DioException error, ErrorInterceptorHandler handler){
+            print("Errror4 ${Response}");
             return handler.next(error);
       }
         )

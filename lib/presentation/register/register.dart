@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:advance_mvvm/app/app_prefs.dart';
 import 'package:advance_mvvm/app/di.dart';
 import 'package:advance_mvvm/data/mapper/mapper.dart';
 import 'package:advance_mvvm/presentation/common/state_renderer/state_render_impl.dart';
@@ -11,6 +12,7 @@ import 'package:advance_mvvm/presentation/resources/strings_manager.dart';
 import 'package:advance_mvvm/presentation/resources/values_manager.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RegisterView extends StatefulWidget {
@@ -22,6 +24,7 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final RegisterViewModel _viewModel = instance<RegisterViewModel>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   ImagePicker picker = instance<ImagePicker>();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _userNameTextEditingController = TextEditingController();
@@ -51,6 +54,13 @@ class _RegisterViewState extends State<RegisterView> {
 
     _passwordTextEditingController.addListener(() {
       _viewModel.setPassword(_passwordTextEditingController.text);
+    });
+
+    _viewModel.isUserLoggedInSuccessfullyStreamController.stream.listen((iSuccessLoggedIn) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        _appPreferences.setIsUserLoggedIn();
+        Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+      });
     });
   }
 
@@ -105,13 +115,13 @@ class _RegisterViewState extends State<RegisterView> {
                         flex: 1,
                         child: CountryCodePicker(
                           onChanged: (country) {
-                            _viewModel.setMobileNumber(country.dialCode ?? EMPTY);
+                            _viewModel.setMobileCode(country.dialCode ?? EMPTY);
                           },
                           initialSelection: "+91",
                           showCountryOnly: true,
                           hideMainText: true,
                           showOnlyCountryWhenClosed: true,
-                          favorite: ["+966", "+02", "+39", "+91"],
+                          favorite: const ["+966", "+02", "+39", "+91"],
                         )),
                     Expanded(
                         flex: 3,
@@ -174,18 +184,16 @@ class _RegisterViewState extends State<RegisterView> {
               child: StreamBuilder<bool>(
                 stream: _viewModel.outputIsAllInputsValid,
                 builder: (context, snapshot) {
-                  print("Data : ${snapshot.data}");
                   return SizedBox(
-                    width: double.infinity,
-                    height: AppSize.s40,
-                    child: ElevatedButton(
-                        onPressed: (snapshot.data ?? false)
-                            ? () {
-                                _viewModel.register();
-                              }
-                            : null,
-                        child: const Text(AppStrings.register)),
-                  );
+                      width: double.infinity,
+                      height: AppSize.s40,
+                      child: ElevatedButton(
+                          onPressed: (snapshot.data ?? false)
+                              ? () {
+                                  _viewModel.register();
+                                }
+                              : null,
+                          child: const Text(AppStrings.register)));
                 },
               ),
             ),
@@ -209,18 +217,18 @@ class _RegisterViewState extends State<RegisterView> {
 
   Widget _getMediaWidget() {
     return Padding(
-        padding: EdgeInsets.only(left: AppPadding.p8, right: AppPadding.p8),
+        padding: const EdgeInsets.only(left: AppPadding.p8, right: AppPadding.p8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(child: Text(AppStrings.profilePicture)),
+            const Flexible(child: Text(AppStrings.profilePicture)),
             Flexible(
                 child: StreamBuilder<File>(
                     stream: _viewModel.outputProfilePicture,
                     builder: (context, snapshot) {
                       return _imagePickedByUser(snapshot.data);
                     })),
-            Flexible(child: Icon(Icons.camera_alt))
+            const Flexible(child: Icon(Icons.camera_alt))
           ],
         ));
   }
@@ -241,18 +249,18 @@ class _RegisterViewState extends State<RegisterView> {
               child: Wrap(
             children: [
               ListTile(
-                trailing: Icon(Icons.arrow_forward),
-                leading: Icon(Icons.photo),
-                title: Text(AppStrings.photoGallery),
+                trailing: const Icon(Icons.arrow_forward),
+                leading: const Icon(Icons.photo),
+                title: const Text(AppStrings.photoGallery),
                 onTap: () {
                   imageFormGallery();
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
-                trailing: Icon(Icons.arrow_forward),
-                leading: Icon(Icons.camera),
-                title: Text(AppStrings.photoCamera),
+                trailing: const Icon(Icons.arrow_forward),
+                leading: const Icon(Icons.camera),
+                title: const Text(AppStrings.photoCamera),
                 onTap: () {
                   imageFormCamera();
                   Navigator.of(context).pop();
