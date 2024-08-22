@@ -81,3 +81,94 @@ Map<String, dynamic> _$ForgetPasswordResponseToJson(
       'message': instance.message,
       'support': instance.support,
     };
+
+ServiceResponse _$ServiceResponseFromJson(Map<String, dynamic> json) =>
+    ServiceResponse(
+      (json['id'] as num?)?.toInt(),
+      json['title'] as String?,
+      json['image'] as String?,
+    )
+      ..status = (json['status'] as num?)?.toInt()
+      ..message = json['message'] as String?;
+
+Map<String, dynamic> _$ServiceResponseToJson(ServiceResponse instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'message': instance.message,
+      'id': instance.id,
+      'title': instance.title,
+      'image': instance.image,
+    };
+
+StoreResponse _$StoresResponseFromJson(Map<String, dynamic> json) =>
+    StoreResponse(
+      (json['id'] as num?)?.toInt(),
+      json['title'] as String?,
+      json['image'] as String?,
+    )
+      ..status = (json['status'] as num?)?.toInt()
+      ..message = json['message'] as String?;
+
+Map<String, dynamic> _$StoresResponseToJson(StoreResponse instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'message': instance.message,
+      'id': instance.id,
+      'title': instance.title,
+      'image': instance.image,
+    };
+
+BannerResponse _$BannerResponseFromJson(Map<String, dynamic> json) =>
+    BannerResponse(
+      (json['id'] as num?)?.toInt(),
+      json['title'] as String?,
+      json['image'] as String?,
+      json['link'] as String?,
+    )
+      ..status = (json['status'] as num?)?.toInt()
+      ..message = json['message'] as String?;
+
+Map<String, dynamic> _$BannerResponseToJson(BannerResponse instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'message': instance.message,
+      'id': instance.id,
+      'title': instance.title,
+      'image': instance.image,
+      'link': instance.link,
+    };
+
+HomeDataResponse _$HomeDataResponseFromJson(Map<String, dynamic> json) =>
+    HomeDataResponse(
+      (json['services'] as List<dynamic>?)
+          ?.map((e) => ServiceResponse.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      (json['stores'] as List<dynamic>?)
+          ?.map((e) => StoreResponse.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      (json['banners'] as List<dynamic>?)
+          ?.map((e) => BannerResponse.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$HomeDataResponseToJson(HomeDataResponse instance) =>
+    <String, dynamic>{
+      'services': instance.service,
+      'stores': instance.stores,
+      'banners': instance.banner,
+    };
+
+HomeResponse _$HomeResponseFromJson(Map<String, dynamic> json) => HomeResponse(
+      json['data'] == null
+          ? null
+          : HomeDataResponse.fromJson(json['data'] as Map<String, dynamic>),
+    )
+      ..status = (json['status'] as num?)?.toInt()
+      ..message = json['message'] as String?;
+
+Map<String, dynamic> _$HomeResponseToJson(HomeResponse instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'message': instance.message,
+      'data': instance.data,
+    };
