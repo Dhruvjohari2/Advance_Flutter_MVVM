@@ -100,7 +100,7 @@ Map<String, dynamic> _$ServiceResponseToJson(ServiceResponse instance) =>
       'image': instance.image,
     };
 
-StoreResponse _$StoresResponseFromJson(Map<String, dynamic> json) =>
+StoreResponse _$StoreResponseFromJson(Map<String, dynamic> json) =>
     StoreResponse(
       (json['id'] as num?)?.toInt(),
       json['title'] as String?,
@@ -109,7 +109,7 @@ StoreResponse _$StoresResponseFromJson(Map<String, dynamic> json) =>
       ..status = (json['status'] as num?)?.toInt()
       ..message = json['message'] as String?;
 
-Map<String, dynamic> _$StoresResponseToJson(StoreResponse instance) =>
+Map<String, dynamic> _$StoreResponseToJson(StoreResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,

@@ -96,9 +96,9 @@ class StoreResponse extends BaseResponse {
 
   StoreResponse(this.id, this.title, this.image);
 
-  Map<String, dynamic> toJson() => _$StoresResponseToJson(this);
+  Map<String, dynamic> toJson() => _$StoreResponseToJson(this);
 
-  factory StoreResponse.fromJson(Map<String, dynamic> json) => _$StoresResponseFromJson(json);
+  factory StoreResponse.fromJson(Map<String, dynamic> json) => _$StoreResponseFromJson(json);
 }
 
 @JsonSerializable()
