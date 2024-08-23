@@ -6,10 +6,12 @@ import 'package:advance_mvvm/data/network/network_info.dart';
 import 'package:advance_mvvm/data/repository/repository_impl.dart';
 import 'package:advance_mvvm/domain/repository/repository.dart';
 import 'package:advance_mvvm/domain/usecase/forget_password_usecase.dart';
+import 'package:advance_mvvm/domain/usecase/home_usecase.dart';
 import 'package:advance_mvvm/domain/usecase/login_usecase.dart';
 import 'package:advance_mvvm/domain/usecase/register_usecase.dart';
 import 'package:advance_mvvm/presentation/forget_password/forget_password_viewmodel.dart';
 import 'package:advance_mvvm/presentation/login/login_viewmodel.dart';
+import 'package:advance_mvvm/presentation/main/home_viewmodel.dart';
 import 'package:advance_mvvm/presentation/register/register_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
@@ -56,6 +58,13 @@ initRegisterModule() {
     instance.registerFactory<RegisterUseCase>(() => RegisterUseCase(instance()));
     instance.registerFactory<RegisterViewModel>(() => RegisterViewModel(instance()));
     instance.registerFactory<ImagePicker>(() => ImagePicker());
+  }
+}
+
+initHomeModule() {
+  if (!GetIt.I.isRegistered<HomeUseCase>()) {
+    instance.registerFactory<HomeUseCase>(() => HomeUseCase(instance()));
+    instance.registerFactory<HomeViewModel>(() => HomeViewModel(instance()));
   }
 }
 
