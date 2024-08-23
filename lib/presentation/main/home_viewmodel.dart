@@ -10,9 +10,11 @@ import 'package:rxdart/rxdart.dart';
 
 class HomeViewModel extends BaseViewModel implements HomeViewModelInputs, HomeViewModelOutputs {
   final HomeUseCase _homeUseCase;
-  final StreamController _serviceStreamController = BehaviorSubject<List<Service>>();
-  final StreamController _storeStreamController = BehaviorSubject<List<Store>>();
-  final StreamController _bannerStreamController = BehaviorSubject<List<BannerAd>>();
+  // final StreamController _serviceStreamController = BehaviorSubject<List<Service>>();
+  // final StreamController _storeStreamController = BehaviorSubject<List<Store>>();
+  // final StreamController _bannerStreamController = BehaviorSubject<List<BannerAd>>();
+
+  final _dataStreamController = BehaviorSubject<HomeViewObject>();
   HomeViewModel(this._homeUseCase);
 
   @override
@@ -27,47 +29,55 @@ class HomeViewModel extends BaseViewModel implements HomeViewModelInputs, HomeVi
       inputState.add(ErrorState(StateRendererType.FULL_SCREEN_ERROR_STATE, failure.message));
     }, (homeObject){
       inputState.add(ContentState());
-      inputBanners.add(homeObject.data.banners);
-      inputServices.add(homeObject.data.services);
-      inputStores.add(homeObject.data.stores);
+      inputHomeData.add(HomeViewObject(homeObject.data.stores,
+      homeObject.data.services,homeObject.data.banners));
     });
   }
 
   @override
   void dispose() {
-    _serviceStreamController.close();
-    _storeStreamController.close();
-    _bannerStreamController.close();
+    _dataStreamController.close();
     super.dispose();
   }
 
-  @override
-  Sink get inputBanners => _bannerStreamController.sink;
+  // @override
+  // Sink get inputBanners => _bannerStreamController.sink;
+  //
+  // @override
+  // Sink get inputServices => _serviceStreamController.sink;
+  //
+  // @override
+  // Sink get inputStores => _storeStreamController.sink;
+  //
+  // @override
+  // Stream<List<BannerAd>> get outputBanners => _bannerStreamController.stream.map((banners) => banners);
+  //
+  // @override
+  // Stream<List<Service>> get outputServices => _serviceStreamController.stream.map((services) => services);
+  //
+  // @override
+  // Stream<List<Store>> get outputStores => _storeStreamController.stream.map((stores) => stores);
 
   @override
-  Sink get inputServices => _serviceStreamController.sink;
+  Sink get inputHomeData => _dataStreamController.sink;
 
   @override
-  Sink get inputStores => _storeStreamController.sink;
-
-  @override
-  Stream<List<BannerAd>> get outputBanners => _bannerStreamController.stream.map((banners) => banners);
-
-  @override
-  Stream<List<Service>> get outputServices => _serviceStreamController.stream.map((services) => services);
-
-  @override
-  Stream<List<Store>> get outputStores => _storeStreamController.stream.map((stores) => stores);
+  Stream<HomeViewObject> get outputHomeData =>
+      _dataStreamController.stream.map((data)=> data);
 }
 
 abstract class HomeViewModelInputs {
-  Sink get inputServices;
-  Sink get inputStores;
-  Sink get inputBanners;
+  Sink get inputHomeData;
 }
 
 abstract class HomeViewModelOutputs {
-  Stream<List<Service>> get outputServices;
-  Stream<List<Store>> get outputStores;
-  Stream<List<BannerAd>> get outputBanners;
+  Stream<HomeViewObject> get outputHomeData;
+}
+
+class HomeViewObject{
+  List<Store> stores;
+  List<Service> services;
+  List<BannerAd> banners;
+
+  HomeViewObject(this.stores,this.services,this.banners);
 }

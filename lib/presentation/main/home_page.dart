@@ -3,6 +3,7 @@ import 'package:advance_mvvm/domain/model/model.dart';
 import 'package:advance_mvvm/presentation/common/state_renderer/state_render_impl.dart';
 import 'package:advance_mvvm/presentation/main/home_viewmodel.dart';
 import 'package:advance_mvvm/presentation/resources/color_manager.dart';
+import 'package:advance_mvvm/presentation/resources/routes_manager.dart';
 import 'package:advance_mvvm/presentation/resources/strings_manager.dart';
 import 'package:advance_mvvm/presentation/resources/values_manager.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -46,25 +47,27 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _getContentWidgets() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [_getBannerCarousel(), _getSection(AppStrings.services), _getServices(), _getSection(AppStrings.stores), _getStores()],
-    );
+    return StreamBuilder(
+        stream: _viewModel.outputHomeData,
+        builder: (context, snapshot) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _getBanner(snapshot.data?.banners),
+              _getSection(AppStrings.services),
+              _getServicesWidget(snapshot.data?.services),
+              _getSection(AppStrings.stores),
+              _getStoreWidget(snapshot.data?.stores)
+            ],
+          );
+        });
   }
 
   Widget _getSection(String title) {
     return Padding(
-      padding: EdgeInsets.only(top: AppPadding.p12, left: AppPadding.p12, bottom: AppPadding.p2),
+      padding: const EdgeInsets.only(top: AppPadding.p12, left: AppPadding.p12, bottom: AppPadding.p2),
       child: Text(title, style: Theme.of(context).textTheme.titleMedium),
     );
-  }
-
-  Widget _getBannerCarousel() {
-    return StreamBuilder<List<BannerAd>>(
-        stream: _viewModel.outputBanners,
-        builder: (content, snapshots) {
-          return _getBanner(snapshots.data);
-        });
   }
 
   Widget _getBanner(List<BannerAd>? banners) {
@@ -92,20 +95,12 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _getServices() {
-    return StreamBuilder<List<Service>>(
-        stream: _viewModel.outputServices,
-        builder: (content, snapshots) {
-          return _getServicesWidget(snapshots.data);
-        });
-  }
-
   Widget _getServicesWidget(List<Service>? services) {
     if (services != null) {
       return Padding(
         padding: EdgeInsets.only(left: AppPadding.p12, right: AppPadding.p12),
         child: Container(
-          height: AppSize.s140,
+          height: AppSize.s130,
           margin: EdgeInsets.symmetric(vertical: AppMargin.m12),
           child: ListView(
             scrollDirection: Axis.horizontal,
@@ -140,8 +135,36 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _getStores() {
-    return Center();
+  Widget _getStoreWidget(List<Store>? store) {
+    if (store != null) {
+      return Padding(
+        padding: EdgeInsets.only(left: AppPadding.p12, right: AppPadding.p12),
+        child: Flex(
+          direction: Axis.vertical,
+          children: [
+            GridView.count(
+                crossAxisSpacing: AppSize.s8,
+                mainAxisSpacing: AppSize.s8,
+                physics: const ScrollPhysics(),
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                children: List.generate(store.length, (index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Routes.storeDetailsRoute);
+                    },
+                    child: Card(
+                      elevation: AppSize.s4,
+                      child: Image.network(store[index].image, fit: BoxFit.cover),
+                    ),
+                  );
+                }))
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 
   @override
