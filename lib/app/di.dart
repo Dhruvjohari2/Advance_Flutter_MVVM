@@ -1,4 +1,5 @@
 import 'package:advance_mvvm/app/app_prefs.dart';
+import 'package:advance_mvvm/data/data_source/local_data_source.dart';
 import 'package:advance_mvvm/data/data_source/remote_data_source.dart';
 import 'package:advance_mvvm/data/network/app_api.dart';
 import 'package:advance_mvvm/data/network/dio_factory.dart';
@@ -36,7 +37,9 @@ Future<void> initAppModule() async {
 
   instance.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImplementer(instance()));
 
-  instance.registerLazySingleton<Repository>(() => RepositoryImpl(instance(), instance()));
+  instance.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImplementer());
+
+  instance.registerLazySingleton<Repository>(() => RepositoryImpl(instance(),instance(), instance()));
 }
 
 initLoginModule() {
@@ -67,5 +70,3 @@ initHomeModule() {
     instance.registerFactory<HomeViewModel>(() => HomeViewModel(instance()));
   }
 }
-
-

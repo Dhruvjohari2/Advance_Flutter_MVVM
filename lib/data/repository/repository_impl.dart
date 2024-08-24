@@ -1,3 +1,4 @@
+import 'package:advance_mvvm/data/data_source/local_data_source.dart';
 import 'package:advance_mvvm/data/data_source/remote_data_source.dart';
 import 'package:advance_mvvm/data/mapper/mapper.dart';
 import 'package:advance_mvvm/data/network/error_handler.dart';
@@ -9,10 +10,11 @@ import 'package:advance_mvvm/domain/repository/repository.dart';
 import 'package:dartz/dartz.dart';
 
 class RepositoryImpl extends Repository {
-  RemoteDataSource _remoteDataSource;
-  NetworkInfo _networkInfo;
+  final RemoteDataSource _remoteDataSource;
+  final LocalDataSource _localDataSource;
+  final NetworkInfo _networkInfo;
 
-  RepositoryImpl(this._remoteDataSource, this._networkInfo);
+  RepositoryImpl(this._remoteDataSource, this._localDataSource, this._networkInfo);
 
   @override
   Future<Either<Failure, Authentication>> login(LoginRequest loginRequest) async {
@@ -36,21 +38,19 @@ class RepositoryImpl extends Repository {
 
   @override
   Future<Either<Failure, String>> forgetPassword(String email) async {
-    if(await _networkInfo.isConnected){
-      try{
+    if (await _networkInfo.isConnected) {
+      try {
         final response = await _remoteDataSource.forgotPassword(email);
 
-        if(response.status == ApiInternalStatus.SUCCESS){
+        if (response.status == ApiInternalStatus.SUCCESS) {
           return Right(response.toDomain());
         } else {
-          return Left(Failure(response.status ?? ResponseCode.DEFAULT,
-          response.message ?? ResponseMessage.DEFAULT));
+          return Left(Failure(response.status ?? ResponseCode.DEFAULT, response.message ?? ResponseMessage.DEFAULT));
         }
-      }catch(error){
+      } catch (error) {
         return Left(ErrorHandler.handle(error).failure);
       }
-    }
-    else{
+    } else {
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
@@ -77,22 +77,27 @@ class RepositoryImpl extends Repository {
 
   @override
   Future<Either<Failure, HomeObject>> getHome() async {
-    if (await _networkInfo.isConnected) {
-      try {
-        final response = await _remoteDataSource.getHome();
-        if (response.status == ApiInternalStatus.SUCCESS) {
-          return Right(response.toDomain());
-        } else {
-          return Left(Failure(response.status ?? ApiInternalStatus.FAILURE, response.message ?? "Error from APi side"));
+    try {
+      final response = await _localDataSource.getHome();
+      return Right(response.toDomain());
+    } catch (cacheError) {
+      if (await _networkInfo.isConnected) {
+        try {
+          final response = await _remoteDataSource.getHome();
+          if (response.status == ApiInternalStatus.SUCCESS) {
+            _localDataSource.saveHomeToCache(response);
+            return Right(response.toDomain());
+          } else {
+            return Left(Failure(response.status ?? ApiInternalStatus.FAILURE, response.message ?? "Error from APi side"));
+          }
+        } catch (error) {
+          print("error $error ");
+          return Left(ErrorHandler.handle(error).failure);
         }
-      } catch (error) {
-        print("error $error ");
-        return Left(ErrorHandler.handle(error).failure);
+      } else {
+        print("else");
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
-    } else {
-      print("else");
-      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
-
   }
 }
