@@ -60,3 +60,10 @@ extension HomeResponseMapper on HomeResponse? {
     return HomeObject(data);
   }
 }
+
+extension StoreDetailResponseMapper on StoreDetailResponse? {
+  StoreDetail toDomain() {
+    return StoreDetail(this?.image?.orEmpty() ?? EMPTY, this?.id?.orZero() ?? ZERO, this?.title?.orEmpty() ?? EMPTY,
+    this?.detail?.orEmpty() ?? EMPTY, this?.service?.orEmpty() ?? EMPTY,this?.about?.orEmpty() ?? EMPTY,);
+  }
+}

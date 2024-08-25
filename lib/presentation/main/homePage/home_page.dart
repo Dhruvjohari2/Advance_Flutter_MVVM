@@ -1,7 +1,7 @@
 import 'package:advance_mvvm/app/di.dart';
 import 'package:advance_mvvm/domain/model/model.dart';
 import 'package:advance_mvvm/presentation/common/state_renderer/state_render_impl.dart';
-import 'package:advance_mvvm/presentation/main/home_viewmodel.dart';
+import 'package:advance_mvvm/presentation/main/homePage/home_viewmodel.dart';
 import 'package:advance_mvvm/presentation/resources/color_manager.dart';
 import 'package:advance_mvvm/presentation/resources/routes_manager.dart';
 import 'package:advance_mvvm/presentation/resources/strings_manager.dart';
@@ -98,10 +98,10 @@ class _HomePageState extends State<HomePage> {
   Widget _getServicesWidget(List<Service>? services) {
     if (services != null) {
       return Padding(
-        padding: EdgeInsets.only(left: AppPadding.p12, right: AppPadding.p12),
+        padding: const EdgeInsets.only(left: AppPadding.p12, right: AppPadding.p12),
         child: Container(
           height: AppSize.s130,
-          margin: EdgeInsets.symmetric(vertical: AppMargin.m12),
+          margin: const EdgeInsets.symmetric(vertical: AppMargin.m12),
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: services
@@ -115,10 +115,11 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(AppSize.s12),
-                          child: Image.network(service.image, fit: BoxFit.cover, width: AppSize.s130, height: AppSize.s130),
+                          child: Image.network(service.image,
+                              fit: BoxFit.cover, width: AppSize.s100, height: AppSize.s90),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: AppPadding.p8),
+                          padding: const EdgeInsets.only(top: AppPadding.p8),
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(service.title, textAlign: TextAlign.center),
@@ -138,7 +139,7 @@ class _HomePageState extends State<HomePage> {
   Widget _getStoreWidget(List<Store>? store) {
     if (store != null) {
       return Padding(
-        padding: EdgeInsets.only(left: AppPadding.p12, right: AppPadding.p12),
+        padding: const EdgeInsets.only(left: AppPadding.p12, right: AppPadding.p12),
         child: Flex(
           direction: Axis.vertical,
           children: [

@@ -12,7 +12,7 @@ import 'package:advance_mvvm/domain/usecase/login_usecase.dart';
 import 'package:advance_mvvm/domain/usecase/register_usecase.dart';
 import 'package:advance_mvvm/presentation/forget_password/forget_password_viewmodel.dart';
 import 'package:advance_mvvm/presentation/login/login_viewmodel.dart';
-import 'package:advance_mvvm/presentation/main/home_viewmodel.dart';
+import 'package:advance_mvvm/presentation/main/homePage/home_viewmodel.dart';
 import 'package:advance_mvvm/presentation/register/register_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
