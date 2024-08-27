@@ -5,6 +5,7 @@ import 'package:advance_mvvm/presentation/resources/routes_manager.dart';
 import 'package:advance_mvvm/presentation/resources/strings_manager.dart';
 import 'package:advance_mvvm/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -26,7 +27,9 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text(AppStrings.changeLanguage, style: Theme.of(context).textTheme.headlineLarge),
           leading: Icon(Icons.language),
           trailing: Icon(Icons.arrow_forward_ios),
-          onTap: () {},
+          onTap: () {
+            _changeLanguage();
+          },
         ),
         ListTile(
           title: Text(AppStrings.contactUs, style: Theme.of(context).textTheme.headlineLarge),
@@ -57,7 +60,11 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _changeLanguage() {}
+  void _changeLanguage() {
+    _appPreferences.setLanguageChanged();
+    Phoenix.rebirth(context);
+  }
+
   void _contactUs() {}
   void _inviteFriends() {}
   void _logout() {
